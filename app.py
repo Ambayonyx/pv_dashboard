@@ -35,20 +35,21 @@ def main(default_filename: str):
 
     options = st.sidebar.radio('Pages',
                                options=[
-                                   'Raw data',
                                    'Daily',
-                                   'overlay',
+                                   'Overlay',
+                                   'Raw data',
                                ])
 
     st.title(':sunny: PV Dashboard')
     st.markdown('##')
 
-    if options == 'Raw data':
-        raw_data(view, days)
-    elif options == 'Daily':
-        daily(view)
-    elif options == 'overlay':
-        overlay_plot(view)
+    match options:
+        case  'Raw data':
+            raw_data(view, days)
+        case 'Daily':
+            daily(view)
+        case 'Overlay':
+            overlay_plot(view)
 
     st.markdown("""*Note: This page is not a product of Autarco, nor is it affiliated to Autarco. 
     Autarco holds no responsibility for its content.* 
