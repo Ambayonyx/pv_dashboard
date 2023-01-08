@@ -33,5 +33,7 @@ class Model:
             self.df[time_column_name] = pd.to_datetime(self.df['date']).dt.strftime("%H:%M:%S")
         except FileNotFoundError as exception:
             self.model_status.append(f'{str(exception)}')
+        except ValueError as exception:
+            self.model_status.append(f'Incorrect file format? {str(exception)}')
 
         return self
