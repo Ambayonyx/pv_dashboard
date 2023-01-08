@@ -35,5 +35,9 @@ class Model:
             self.model_status.append(f'{str(exception)}')
         except ValueError as exception:
             self.model_status.append(f'Incorrect file format? {str(exception)}')
+        except PermissionError as exception:
+            self.model_status.append(f'Are you allowed to access this file? {str(exception)}')
+        except Exception as exception:
+            self.model_status.append(str(exception))
 
         return self
