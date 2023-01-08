@@ -11,7 +11,10 @@ from data_model import Model, day_column_name
 class ViewModel:
     def __init__(self, model: Model):
         self._model_ = model
-        self.days = self._model_.df[day_column_name].unique()
+        if self.model_is_ok():
+            self.days = self._model_.df[day_column_name].unique()
+        else:
+            self.days = []
 
     def dataframe(self) -> pd.DataFrame:
         return self._model_.df
@@ -122,3 +125,9 @@ class ViewModel:
             f"{data_model.day_column_name} == @days"
         )
         return df_selection
+
+    def model_is_ok(self) -> bool:
+        return len(self._model_.model_status) == 0
+
+    def model_status(self) -> str:
+        return "\n".join(self._model_.model_status)

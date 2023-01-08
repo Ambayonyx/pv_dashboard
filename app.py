@@ -26,6 +26,11 @@ def main(default_filename: str):
     else:
         view = ctrl.load_file(data_file=default_filename)
 
+    if not view.model_is_ok():
+        st.markdown('Failed to load the model:')
+        st.markdown(f'{view.model_status()}')
+        return
+
     st.sidebar.header("Please filter here:")
     days = st.sidebar.multiselect(
         "Select the date:",
@@ -88,5 +93,5 @@ def raw_data(model: ViewModel, days: List[str]):
 
 
 if __name__ == '__main__':
-    filename = 'data/input/full-messages.cpl25biy.20221231-20230103.csv'
+    filename = 'data/input/examples/full-messages.example.20221231-20230104.csv'
     main(filename)
