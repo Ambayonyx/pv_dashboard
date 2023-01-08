@@ -56,11 +56,19 @@ class ViewModel:
         return overlay, dates
 
     def daily(self) -> pd.DataFrame:
+        def datetime_from_time(t: datetime.time) -> datetime.datetime:
+            datet = datetime.datetime(
+                year=datetime.MINYEAR, month=1, day=1,
+                hour=t.hour, minute=t.minute,
+                second=t.second, microsecond=t.microsecond)
+            return datet
+
         df = self._model_.df
         days = sorted(df[data_model.day_column_name].unique())
 
         start_list = []
         end_list = []
+        generation_length_list = []
         power_max_list = []
         energy_list = []
         energy_calculated_list = []
@@ -73,6 +81,14 @@ class ViewModel:
             start_list.append(start)
             end = hours_sorted[-1]
             end_list.append(end)
+
+            start_time = datetime.time.fromisoformat(start)
+            start_time = datetime_from_time(start_time)
+            end_time = datetime.time.fromisoformat(end)
+            end_time = datetime_from_time(end_time)
+            duration = end_time - start_time
+            generation_length = int(duration.total_seconds()/60)
+            generation_length_list.append(generation_length)
 
             power_sorted = sorted(day_entries[data_model.power_column_name])
             power_max = power_sorted[-1]
@@ -92,6 +108,7 @@ class ViewModel:
             'date': days,
             'start': start_list,
             'end': end_list,
+            'generation period [min]': generation_length_list,
             'power max [W]': power_max_list,
             'energy [kWh]': energy_list,
             'energy (calculated) [kWh]': energy_calculated_list,
