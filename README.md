@@ -3,7 +3,7 @@
 PV Dashboard is a small Streamlit/Python based application to view the performance of my Autarco Photo Voltaic panels.
 
 ## Streamlit
-Some usefull links to the Streamlit documentation.
+Some useful links to the Streamlit documentation.
 * [Project page](https://streamlit.io/)
 * [Cheat sheet](https://docs.streamlit.io/library/cheatsheet)
 
@@ -12,4 +12,4 @@ Some usefull links to the Streamlit documentation.
 To run streamlit locally, run the app from within the (virtual) environment which has all 
 [required packages](requirements.txt):
 
-    (env) PS C:\Users\Ambayonyx\Projects\pv_dashboard> streamlit run app.py
+    (env) PS C:\Users\Ambayonyx\Projects\pv_dashboard> streamlit run 1_Home.py

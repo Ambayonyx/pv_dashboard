@@ -5,37 +5,41 @@ import streamlit as st
 
 import control
 import data_model
+from view.view_common import footer
 from view_model import ViewModel
 
 
-def main():
+def analysis():
     # emojis: https://www.webfx.com/tools/emoji-cheat-sheet
-    st.set_page_config(page_title='PV Dashboard',
-                       page_icon=':sunny:',
+    st.set_page_config(page_title='PV Analysis',
+                       page_icon=':chart_with_upwards_trend:',
                        layout='wide')
 
     # ----------------------
     # setup the sidebar
     # ----------------------
     st.sidebar.header('Navigation')
-    uploaded_file = st.sidebar.file_uploader('Upload the file here', help="Must an exported Autarco CSV file!")
+    uploaded_file = st.sidebar.file_uploader('Upload the file here', help="Must be an exported Autarco CSV file!")
 
     if uploaded_file:
         ctrl = control.Control()
         view = ctrl.load_file(data_file=uploaded_file)
     else:
-        st.title('PV Dashboard')
+        st.title(':chart_with_upwards_trend: PV Analysis')
         st.header(':arrow_left: Load CSV file first')
+        footer()
         return
 
     if not view.model_is_ok():
         st.markdown('Failed to load the model:')
         st.markdown(f'{view.model_status()}')
+        footer()
         return
 
     if not view.model_is_ok():
         st.markdown('Failed to load the model:')
         st.markdown(f'{view.model_status()}')
+        footer()
         return
 
     st.sidebar.header("Please filter here:")
@@ -52,7 +56,7 @@ def main():
                                    'Raw data',
                                ])
 
-    st.title(':sunny: PV Dashboard')
+    st.title(':chart_with_upwards_trend: PV Analysis')
     st.markdown('##')
 
     match options:
@@ -63,9 +67,7 @@ def main():
         case 'Overlay':
             overlay_plot(view)
 
-    st.markdown("""*Note: This page is not a product of Autarco, nor is it affiliated to Autarco. 
-    Autarco holds no responsibility for its content.* 
-    """)
+    footer()
 
 
 def overlay_plot(model: ViewModel):
@@ -99,5 +101,4 @@ def raw_data(model: ViewModel, days: List[str]):
     st.dataframe(selection)
 
 
-if __name__ == '__main__':
-    main()
+analysis()
