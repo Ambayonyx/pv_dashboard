@@ -20,11 +20,13 @@ def main():
     st.sidebar.header('Navigation')
     uploaded_file = st.sidebar.file_uploader('Upload the file here', help="Must an exported Autarco CSV file!")
 
-    ctrl = control.Control()
     if uploaded_file:
+        ctrl = control.Control()
         view = ctrl.load_file(data_file=uploaded_file)
     else:
-        view = ctrl.get_view()
+        st.title('PV Dashboard')
+        st.header(':arrow_left: Load CSV file first')
+        return
 
     if not view.model_is_ok():
         st.markdown('Failed to load the model:')
