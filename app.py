@@ -33,6 +33,11 @@ def main():
         st.markdown(f'{view.model_status()}')
         return
 
+    if not view.model_is_ok():
+        st.markdown('Failed to load the model:')
+        st.markdown(f'{view.model_status()}')
+        return
+
     st.sidebar.header("Please filter here:")
     days = st.sidebar.multiselect(
         "Select the date:",
