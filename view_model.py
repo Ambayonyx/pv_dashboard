@@ -9,7 +9,7 @@ from data_model import Model, day_column_name
 
 
 class ViewModel:
-    def __init__(self, model: Model):
+    def __init__(self, model: Model = None):
         self._model_ = model
         if self.model_is_ok():
             self.days = self._model_.df[day_column_name].unique()

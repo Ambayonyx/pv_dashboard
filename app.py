@@ -8,7 +8,7 @@ import data_model
 from view_model import ViewModel
 
 
-def main(default_filename: str):
+def main():
     # emojis: https://www.webfx.com/tools/emoji-cheat-sheet
     st.set_page_config(page_title='PV Dashboard',
                        page_icon=':sunny:',
@@ -20,11 +20,18 @@ def main(default_filename: str):
     st.sidebar.header('Navigation')
     uploaded_file = st.sidebar.file_uploader('Upload the file here', help="Must an exported Autarco CSV file!")
 
-    ctrl = control.Control()
     if uploaded_file:
+        ctrl = control.Control()
         view = ctrl.load_file(data_file=uploaded_file)
     else:
-        view = ctrl.load_file(data_file=default_filename)
+        st.title('PV Dashboard')
+        st.header(':arrow_left: Load CSV file first')
+        return
+
+    if not view.model_is_ok():
+        st.markdown('Failed to load the model:')
+        st.markdown(f'{view.model_status()}')
+        return
 
     if not view.model_is_ok():
         st.markdown('Failed to load the model:')
@@ -93,5 +100,4 @@ def raw_data(model: ViewModel, days: List[str]):
 
 
 if __name__ == '__main__':
-    filename = 'data/input/examples/full-messages.example.20221231-20230104.csv'
-    main(filename)
+    main()
