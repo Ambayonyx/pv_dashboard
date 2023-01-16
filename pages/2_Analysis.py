@@ -91,6 +91,30 @@ def daily(model: ViewModel):
     df_daily = model.daily()
     st.header('Daily')
     st.markdown('##')
+
+    plot_duration = px.bar(df_daily, x=df_daily['date'], y=['generation period [min]'], title="Production time")
+    plot_duration.update_layout(width=800)
+    st.plotly_chart(plot_duration)
+
+    plot_power = px.bar(df_daily, x=df_daily['date'], y=['power max [W]', 'power avg [W]'], title="Power production")
+    plot_power.update_layout(width=800)
+    st.plotly_chart(plot_power)
+
+    plot_energy = px.bar(df_daily, x=df_daily['date'], y=['energy [kWh]'], title="Energy yield")
+    plot_energy.update_layout(width=800)
+    st.plotly_chart(plot_energy)
+
+    df_daily = df_daily[[
+        'date',
+        'start',
+        'end',
+        'generation period [min]',
+        'power max [W]',
+        'power avg [W]',
+        'energy [kWh]',
+        'energy (calculated) [kWh]',
+        'energy_error [%]'
+    ]]
     st.dataframe(df_daily)
 
 
