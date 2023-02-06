@@ -120,15 +120,9 @@ class ViewModel:
 
         df = pd.DataFrame(data=daily_data)
         df['power avg [W]'] = df.apply(lambda x: x['energy [kWh]'] / x['generation period [min]'] * 60 * 1000
-        if x['generation period [min]'] > 0.0 else 0, axis=1)
+                                       if x['generation period [min]'] > 0.0 else 0, axis=1)
 
         return df
-
-    def select_days(self, days: List[str]) -> pd.DataFrame:
-        df_selection = self._model_.df.query(
-            f"{data_model.day_column_name} == @days"
-        )
-        return df_selection
 
     def model_is_ok(self) -> bool:
         return len(self._model_.model_status) == 0
