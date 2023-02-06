@@ -90,7 +90,7 @@ class ViewModel:
             end_time = datetime.time.fromisoformat(end)
             end_time = datetime_from_time(end_time)
             duration = end_time - start_time
-            generation_length = int(duration.total_seconds()/60)
+            generation_length = int(duration.total_seconds() / 60)
             generation_length_list.append(generation_length)
 
             power_sorted = sorted(day_entries[data_model.power_column_name])
@@ -118,7 +118,11 @@ class ViewModel:
             'energy_error [%]': energy_error_perc_list
         }
 
-        return pd.DataFrame(data=daily_data)
+        df = pd.DataFrame(data=daily_data)
+        df['power avg [W]'] = df.apply(lambda x: x['energy [kWh]'] / x['generation period [min]'] * 60 * 1000
+        if x['generation period [min]'] > 0.0 else 0, axis=1)
+
+        return df
 
     def select_days(self, days: List[str]) -> pd.DataFrame:
         df_selection = self._model_.df.query(
