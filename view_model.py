@@ -124,6 +124,12 @@ class ViewModel:
 
         return df
 
+    def monthly(self) -> pd.DataFrame:
+        df = self.daily()
+        df['month'] = df['data'].apply(lambda d: d[:7])
+
+        return df
+
     def model_is_ok(self) -> bool:
         return len(self._model_.model_status) == 0
 

@@ -1,5 +1,3 @@
-from typing import List
-
 import plotly.express as px
 import streamlit as st
 
@@ -42,16 +40,10 @@ def analysis():
         footer()
         return
 
-    # st.sidebar.header("Please filter here:")
-    # days = st.sidebar.multiselect(
-    #     "Select the date:",
-    #     options=view.days,
-    #     default=view.days
-    # )
-
     options = st.sidebar.radio('Pages',
                                options=[
                                    'Daily',
+                                   'Monthly',
                                    'Overlay',
                                    'Raw data',
                                ])
@@ -60,10 +52,12 @@ def analysis():
     st.markdown('##')
 
     match options:
-        case  'Raw data':
+        case 'Raw data':
             raw_data(view)
         case 'Daily':
             daily(view)
+        case 'Monthly':
+            monthly(view)
         case 'Overlay':
             overlay_plot(view)
 
@@ -105,7 +99,7 @@ def daily(model: ViewModel):
                         title="Power production",
                         barmode='overlay')
     plot_power.update_layout(width=800)
-    st.plotly_chart(plot_power,)
+    st.plotly_chart(plot_power)
 
     plot_energy = px.bar(df_daily,
                          x=df_daily['date'],
@@ -128,7 +122,56 @@ def daily(model: ViewModel):
     st.dataframe(df_daily)
 
 
-def raw_data(model: ViewModel, days: List[str] = None):
+def monthly(model: ViewModel):
+    df_monthly = model.daily()
+    df_monthly['month'] = df_monthly['date'].apply(lambda d: d.isoformat()[:7])
+    st.header('Monthly')
+    st.markdown('##')
+
+    plot_duration = px.box(df_monthly,
+                           x=df_monthly['month'],
+                           y=['generation period [min]'],
+                           title="Production time")
+    plot_duration.update_layout(width=800)
+    st.plotly_chart(plot_duration)
+
+    plot_power_max = px.box(df_monthly,
+                            x=df_monthly['month'],
+                            y=['power max [W]'],
+                            title="Power production max")
+    plot_power_max.update_layout(width=800)
+    st.plotly_chart(plot_power_max)
+
+    plot_power_average = px.box(df_monthly,
+                                x=df_monthly['month'],
+                                y=['power avg [W]'],
+                                title="Power production average")
+    plot_power_average.update_layout(width=800)
+    st.plotly_chart(plot_power_average)
+
+    plot_energy = px.box(df_monthly,
+                         x=df_monthly['month'],
+                         y=['energy [kWh]'],
+                         title="Energy yield")
+    plot_energy.update_layout(width=800)
+    st.plotly_chart(plot_energy)
+
+    df_monthly = df_monthly[[
+        'date',
+        'month',
+        'start',
+        'end',
+        'generation period [min]',
+        'power max [W]',
+        'power avg [W]',
+        'energy [kWh]',
+        'energy (calculated) [kWh]',
+        'energy_error [%]'
+    ]]
+    st.dataframe(df_monthly)
+
+
+def raw_data(model: ViewModel):
     st.header('All data')
     st.markdown('##')
     st.dataframe(model.dataframe())
