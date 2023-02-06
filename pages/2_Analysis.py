@@ -52,6 +52,7 @@ def analysis():
     options = st.sidebar.radio('Pages',
                                options=[
                                    'Daily',
+                                   'Monthly',
                                    'Overlay',
                                    'Raw data',
                                ])
@@ -64,6 +65,8 @@ def analysis():
             raw_data(view)
         case 'Daily':
             daily(view)
+        case 'Monthly':
+            monthly(view)
         case 'Overlay':
             overlay_plot(view)
 
@@ -126,6 +129,12 @@ def daily(model: ViewModel):
         'energy_error [%]'
     ]]
     st.dataframe(df_daily)
+
+
+def monthly(model: ViewModel):
+    df_daily = model.daily()
+    st.header('Monthly')
+    st.markdown('##')
 
 
 def raw_data(model: ViewModel, days: List[str] = None):
