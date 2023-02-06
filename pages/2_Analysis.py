@@ -1,5 +1,3 @@
-from typing import List
-
 import plotly.express as px
 import streamlit as st
 
@@ -42,13 +40,6 @@ def analysis():
         footer()
         return
 
-    # st.sidebar.header("Please filter here:")
-    # days = st.sidebar.multiselect(
-    #     "Select the date:",
-    #     options=view.days,
-    #     default=view.days
-    # )
-
     options = st.sidebar.radio('Pages',
                                options=[
                                    'Daily',
@@ -61,7 +52,7 @@ def analysis():
     st.markdown('##')
 
     match options:
-        case  'Raw data':
+        case 'Raw data':
             raw_data(view)
         case 'Daily':
             daily(view)
@@ -145,16 +136,16 @@ def monthly(model: ViewModel):
     st.plotly_chart(plot_duration)
 
     plot_power_max = px.box(df_monthly,
-                        x=df_monthly['month'],
-                        y=['power max [W]'],
-                        title="Power production max")
+                            x=df_monthly['month'],
+                            y=['power max [W]'],
+                            title="Power production max")
     plot_power_max.update_layout(width=800)
     st.plotly_chart(plot_power_max)
 
     plot_power_average = px.box(df_monthly,
-                        x=df_monthly['month'],
-                        y=['power avg [W]'],
-                        title="Power production average")
+                                x=df_monthly['month'],
+                                y=['power avg [W]'],
+                                title="Power production average")
     plot_power_average.update_layout(width=800)
     st.plotly_chart(plot_power_average)
 
@@ -180,7 +171,7 @@ def monthly(model: ViewModel):
     st.dataframe(df_monthly)
 
 
-def raw_data(model: ViewModel, days: List[str] = None):
+def raw_data(model: ViewModel):
     st.header('All data')
     st.markdown('##')
     st.dataframe(model.dataframe())
