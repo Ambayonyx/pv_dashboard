@@ -42,12 +42,12 @@ def analysis():
         footer()
         return
 
-    st.sidebar.header("Please filter here:")
-    days = st.sidebar.multiselect(
-        "Select the date:",
-        options=view.days,
-        default=view.days
-    )
+    # st.sidebar.header("Please filter here:")
+    # days = st.sidebar.multiselect(
+    #     "Select the date:",
+    #     options=view.days,
+    #     default=view.days
+    # )
 
     options = st.sidebar.radio('Pages',
                                options=[
@@ -61,7 +61,7 @@ def analysis():
 
     match options:
         case  'Raw data':
-            raw_data(view, days)
+            raw_data(view)
         case 'Daily':
             daily(view)
         case 'Overlay':
@@ -128,11 +128,10 @@ def daily(model: ViewModel):
     st.dataframe(df_daily)
 
 
-def raw_data(model: ViewModel, days: List[str]):
-    selection = model.select_days(days)
+def raw_data(model: ViewModel, days: List[str] = None):
     st.header('All data')
     st.markdown('##')
-    st.dataframe(selection)
+    st.dataframe(model.dataframe())
 
 
 analysis()
