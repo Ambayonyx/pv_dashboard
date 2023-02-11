@@ -25,8 +25,12 @@ def home():
 
     st.subheader("About")
     st.markdown("""
-    [pv_dashboard]: https://github.com/Ambayonyx/pv_dashboard "GITHUB Repository"
-    Sources: [pv_dashboard]
+    [code archive]: https://github.com/Ambayonyx/pv_dashboard 'GITHUB Repository'
+    [project page]: https://github.com/users/Ambayonyx/projects/3 'Project page'
+                
+    Sources:
+     * [Code archive]
+     * [Project page]  (private)
     
     Version: 0.0
     """)
