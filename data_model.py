@@ -29,8 +29,7 @@ class Model:
                 data_file,
                 sep=',',
                 header=0,
-                usecols=Model._input_column_names,
-                nrows=10000
+                usecols=Model._input_column_names
             )
             self.df[day_column_name] = pd.to_datetime(self.df['date']).dt.date
             self.df[time_column_name] = pd.to_datetime(self.df['date']).dt.strftime("%H:%M:%S")
